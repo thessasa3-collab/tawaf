@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Cairo', system-ui, -apple-system, sans-serif;
+    --font-body: 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+    color: #0B1215;
+    background-color: #F4F5F4;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Soft Luminous Gold Text Accent */
+.text-luminous-gold {
+  background: linear-gradient(
+    110deg,
+    #d4aa4f 0%,
+    #f7e2a8 45%,
+    #c59b43 70%,
+    #f2d588 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: goldShimmer 6s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Tactile Button Light Sheen & Visual Press Response */
+.btn-interactive {
+  position: relative;
+  overflow: hidden;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.btn-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 80%
+  );
+  transform: translateX(-120%);
+  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.btn-interactive:hover::before {
+  transform: translateX(120%);
+}
+
+.btn-interactive:hover {
+  transform: translateY(-1px);
+}
+
+.btn-interactive:active {
+  transform: scale(0.97);
+}
+
+/* Pointer-Reactive Soft Illumination Surface */
+.glow-surface {
+  position: relative;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms ease,
+    box-shadow 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-surface:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(8, 45, 35, 0.16),
+    0 0 0 1px rgba(197, 155, 67, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .text-luminous-gold {
+    animation: none;
+    background: none;
+    color: #e6c77a;
+  }
+  .btn-interactive::before {
+    display: none;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Official Printable Ambulance Triage Pass */
+.print-only-card {
+  display: none;
+}
+
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only-card {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
