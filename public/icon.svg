@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="96" fill="#0D5240"/>
+  <rect x="24" y="24" width="464" height="464" rx="76" stroke="#B58E46" stroke-width="8" stroke-opacity="0.7"/>
+  <!-- Outer Ministry-Inspired Octagonal Geometric Star Frame -->
+  <path
+    d="M256 58L328 106L410 114L420 196L454 256L420 316L410 398L328 406L256 454L184 406L102 398L92 316L58 256L92 196L102 114L184 106L256 58Z"
+    fill="#083D2F"
+    stroke="#C59B43"
+    stroke-width="10"
+  />
+  <!-- Inner Haram Arch -->
+  <path
+    d="M156 218C156 162.8 200.8 118 256 118C311.2 118 356 162.8 356 218V358H156V218Z"
+    fill="#0D5240"
+    stroke="#E6C77A"
+    stroke-width="10"
+  />
+  <!-- Gold Kiswah Band -->
+  <path d="M156 212H356" stroke="#C59B43" stroke-width="9"/>
+  <!-- Medical Triage Cross -->
+  <path
+    d="M238 240H274V276H310V312H274V348H238V312H202V276H238V240Z"
+    fill="#FAF8F4"
+  />
+  <!-- Subtle Crescent Crest -->
+  <path
+    d="M256 76C271 76 284 85 289 99C281 93 271 91 261 92C249 94 239 101 234 111C232 92 242 76 256 76Z"
+    fill="#E6C77A"
+  />
+</svg>

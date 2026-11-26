@@ -4,13 +4,20 @@
   :root {
     --font-display: 'Cairo', system-ui, -apple-system, sans-serif;
     --font-body: 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+    --tawaf-bg: #FAF8F4;
+    --tawaf-sandstone: #F2EDE2;
+    --tawaf-emerald: #0D5240;
+    --tawaf-emerald-deep: #083D2F;
+    --tawaf-gold: #B58E46;
+    --tawaf-gold-light: #E6C77A;
+    --tawaf-border: #DDD4C2;
   }
 
   html {
     font-family: var(--font-body);
     scroll-behavior: smooth;
-    color: #0B1215;
-    background-color: #F4F5F4;
+    color: #111D18;
+    background-color: var(--tawaf-bg);
   }
 
   h1, h2, h3, .font-display {
@@ -20,6 +27,17 @@
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/* Ministry of Hajj & Umrah Inspired Subtle Geometric Lattice Backdrop */
+.haram-lattice-bg {
+  background-image:
+    linear-gradient(135deg, rgba(197, 155, 67, 0.08) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(197, 155, 67, 0.08) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(197, 155, 67, 0.05) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(197, 155, 67, 0.05) 25%, transparent 25%);
+  background-position: 20px 0, 20px 0, 0 0, 0 0;
+  background-size: 40px 40px;
 }
 
 /* Soft Luminous Gold Text Accent */
@@ -94,8 +112,63 @@
 
 .glow-surface:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -10px rgba(8, 45, 35, 0.16),
-    0 0 0 1px rgba(197, 155, 67, 0.35);
+  box-shadow: 0 12px 28px -10px rgba(13, 82, 64, 0.16),
+    0 0 0 1px rgba(181, 142, 70, 0.4);
+}
+
+/* Accessibility Modes (Visually Impaired & Disabled Users) */
+html.a11y-font-large {
+  font-size: 112.5%;
+}
+
+html.a11y-font-xlarge {
+  font-size: 125%;
+}
+
+html.a11y-dyslexia body {
+  letter-spacing: 0.03em;
+  word-spacing: 0.12em;
+  line-height: 1.85 !important;
+}
+
+html.a11y-high-contrast body {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+html.a11y-high-contrast .a11y-surface {
+  background-color: #0A0E0C !important;
+  color: #FFFFFF !important;
+  border-color: #FFD65A !important;
+}
+
+html.a11y-high-contrast .a11y-muted {
+  color: #E5E7EB !important;
+}
+
+html.a11y-high-contrast input,
+html.a11y-high-contrast textarea,
+html.a11y-high-contrast select {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: #FFD65A !important;
+}
+
+html.a11y-high-contrast a:focus-visible,
+html.a11y-high-contrast button:focus-visible,
+html.a11y-high-contrast input:focus-visible,
+html.a11y-high-contrast textarea:focus-visible,
+html.a11y-high-contrast select:focus-visible {
+  outline: 3px solid #FFD65A !important;
+  outline-offset: 2px !important;
+}
+
+html.a11y-reduced-motion *,
+html.a11y-reduced-motion *::before,
+html.a11y-reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

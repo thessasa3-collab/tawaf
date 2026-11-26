@@ -5,6 +5,8 @@ import {
 } from './i18n';
 
 export type TriageLevel = 'critical' | 'urgent' | 'stable';
+export type CaseStatus = 'open' | 'dispatched' | 'resolved';
+export type TriageSource = 'ai' | 'local';
 
 export type HaramZone =
   | 'mataf'
@@ -13,6 +15,14 @@ export type HaramZone =
   | 'prayer_halls'
   | 'gates';
 
+export interface GpsLocation {
+  lat: number;
+  lng: number;
+  accuracy: number | null;
+  capturedAt: string;
+  consentGiven: boolean;
+}
+
 export interface TriageInput {
   language: LanguageCode;
   symptoms: string;
@@ -20,6 +30,8 @@ export interface TriageInput {
   ageText: string;
   conscious: 'conscious' | 'confused' | 'unconscious';
   bodyPart: BodyPartId | null;
+  gpsLocation?: GpsLocation | null;
+  locationDetail?: string | null;
 }
 
 export interface ResponderReport {
@@ -42,13 +54,24 @@ export interface TriageResult {
   warningSigns: string;
   nearestCarePoint: string;
   callEmergency: boolean;
+  zone: HaramZone;
   zoneLabel: string;
   ageValue: number | null;
   bodyPart: BodyPartId | null;
   bodyPartLabel: string | null;
+  conscious: 'conscious' | 'confused' | 'unconscious';
   awarenessLabel: string;
   symptomsSnapshot: string;
+  gpsLocation?: GpsLocation | null;
+  locationDetail?: string | null;
   responderReport: ResponderReport;
+  status?: CaseStatus;
+  source?: TriageSource;
+  responderNotes?: string;
+  updatedBy?: string | null;
+  updatedAt?: string;
+  caseToken?: string;
+  persisted?: boolean;
 }
 
 export type ValidationError = {
@@ -169,6 +192,48 @@ export const HARAM_ZONES: Record<
     },
   },
 };
+
+export const HARAM_ZONE_COORDS: Record<HaramZone, { lat: number; lng: number }> = {
+  mataf: { lat: 21.422487, lng: 39.826206 },
+  masa: { lat: 21.42352, lng: 39.82765 },
+  courtyards: { lat: 21.42115, lng: 39.8253 },
+  prayer_halls: { lat: 21.42445, lng: 39.82555 },
+  gates: { lat: 21.4203, lng: 39.8261 },
+};
+
+function haversineMeters(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371000;
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+export function findNearestHaramZone(
+  lat: number,
+  lng: number
+): { zone: HaramZone; distanceMeters: number; withinHaram: boolean } {
+  let bestZone: HaramZone = 'mataf';
+  let bestDist = Infinity;
+
+  (Object.keys(HARAM_ZONE_COORDS) as HaramZone[]).forEach((z) => {
+    const c = HARAM_ZONE_COORDS[z];
+    const d = haversineMeters(lat, lng, c.lat, c.lng);
+    if (d < bestDist) {
+      bestDist = d;
+      bestZone = z;
+    }
+  });
+
+  return {
+    zone: bestZone,
+    distanceMeters: bestDist,
+    withinHaram: bestDist <= 2500,
+  };
+}
 
 export const QUICK_SYMPTOM_PRESETS: Array<{
   id: string;
@@ -1330,12 +1395,19 @@ export function evaluateTriageCase(input: TriageInput): TriageEvaluation {
       warningSigns: template.warning[lang],
       nearestCarePoint: zoneInfo.medicalPoint[lang],
       callEmergency: meta.callEmergency,
+      zone: input.zone,
       zoneLabel: zoneInfo.labels[lang],
       ageValue,
       bodyPart: input.bodyPart,
       bodyPartLabel,
+      conscious: input.conscious,
       awarenessLabel: AWARENESS_LABELS[input.conscious][lang],
       symptomsSnapshot: rawSymptoms,
+      gpsLocation: input.gpsLocation ?? null,
+      locationDetail: input.locationDetail?.trim() ? input.locationDetail.trim().slice(0, 160) : null,
+      status: 'open',
+      source: 'local',
+      responderNotes: '',
       responderReport: {
         clinicalImpression: template.responder.impression[lang],
         immediateActions: template.responder.actions[lang],
@@ -1437,18 +1509,140 @@ export function buildTriageResultFromAI(
     warningSigns: ai.warningSigns,
     nearestCarePoint: zoneInfo.medicalPoint[lang],
     callEmergency: meta.callEmergency,
+    zone: input.zone,
     zoneLabel: zoneInfo.labels[lang],
     ageValue,
     bodyPart: input.bodyPart,
     bodyPartLabel,
+    conscious: input.conscious,
     awarenessLabel: AWARENESS_LABELS[input.conscious][lang],
     symptomsSnapshot: rawSymptoms,
+    gpsLocation: input.gpsLocation ?? null,
+    locationDetail: input.locationDetail?.trim() ? input.locationDetail.trim().slice(0, 160) : null,
+    status: 'open',
+    source: 'ai',
+    responderNotes: '',
     responderReport: {
       clinicalImpression: ai.responderReport.clinicalImpression,
       immediateActions: ai.responderReport.immediateActions,
       recommendedEquipment: ai.responderReport.recommendedEquipment,
       fieldPrecautions: ai.responderReport.fieldPrecautions,
       evacuationRoute: zoneInfo.evacNote[lang],
+    },
+  };
+}
+
+export interface ServerTriageCaseRecord {
+  id: string;
+  level: TriageLevel;
+  status: CaseStatus;
+  source: TriageSource;
+  language: LanguageCode;
+  zone: HaramZone;
+  conscious: 'conscious' | 'confused' | 'unconscious';
+  age: number | null;
+  bodyPart: BodyPartId | null;
+  gpsLocation?: GpsLocation | null;
+  locationDetail?: string | null;
+  symptoms: string;
+  categoryTitle: string;
+  summary: string;
+  firstAidSteps: string[];
+  warningSigns: string;
+  responderReport: {
+    clinicalImpression: string;
+    immediateActions: string[];
+    recommendedEquipment: string;
+    fieldPrecautions: string;
+  };
+  responderNotes: string;
+  updatedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export function buildCreateCasePayload(result: TriageResult, language: LanguageCode) {
+  return {
+    language,
+    symptoms: result.symptomsSnapshot,
+    zone: result.zone,
+    age: result.ageValue,
+    conscious: result.conscious,
+    bodyPart: result.bodyPart,
+    gpsLocation: result.gpsLocation ?? null,
+    locationDetail: result.locationDetail ?? null,
+    level: result.level,
+    source: result.source ?? 'ai',
+    categoryTitle: result.categoryTitle,
+    summary: result.summary,
+    firstAidSteps: result.firstAidSteps,
+    warningSigns: result.warningSigns,
+    responderReport: {
+      clinicalImpression: result.responderReport.clinicalImpression,
+      immediateActions: result.responderReport.immediateActions,
+      recommendedEquipment: result.responderReport.recommendedEquipment,
+      fieldPrecautions: result.responderReport.fieldPrecautions,
+    },
+  };
+}
+
+export function mapServerRecordToTriageResult(
+  rec: ServerTriageCaseRecord,
+  displayLang: LanguageCode,
+  caseToken?: string
+): TriageResult {
+  const finalLevel: TriageLevel =
+    rec.conscious === 'unconscious' ? 'critical' : rec.level;
+  const meta = LEVEL_METADATA[finalLevel];
+  const zoneInfo = HARAM_ZONES[rec.zone];
+  const locale =
+    displayLang === 'ar'
+      ? 'ar-SA'
+      : displayLang === 'ur'
+      ? 'ur-PK'
+      : displayLang === 'id'
+      ? 'id-ID'
+      : 'en-GB';
+  const createdDate = new Date(rec.createdAt);
+  const timeStr = Number.isNaN(createdDate.getTime())
+    ? ''
+    : createdDate.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+
+  return {
+    id: rec.id,
+    timestamp: timeStr,
+    level: finalLevel,
+    levelTitle: meta.titles[displayLang],
+    priorityCode: meta.codes[displayLang],
+    categoryTitle: rec.categoryTitle,
+    summary: rec.summary,
+    firstAidSteps: rec.firstAidSteps,
+    warningSigns: rec.warningSigns,
+    nearestCarePoint: zoneInfo.medicalPoint[displayLang],
+    callEmergency: meta.callEmergency,
+    zone: rec.zone,
+    zoneLabel: zoneInfo.labels[displayLang],
+    ageValue: rec.age,
+    bodyPart: rec.bodyPart,
+    bodyPartLabel: rec.bodyPart ? BODY_PART_LABELS[rec.bodyPart][displayLang] : null,
+    conscious: rec.conscious,
+    awarenessLabel: AWARENESS_LABELS[rec.conscious][displayLang],
+    symptomsSnapshot: rec.symptoms,
+    gpsLocation: rec.gpsLocation ?? null,
+    locationDetail: rec.locationDetail ?? null,
+    status: rec.status,
+    source: rec.source,
+    responderNotes: rec.responderNotes,
+    updatedBy: rec.updatedBy,
+    updatedAt: rec.updatedAt,
+    caseToken,
+    persisted: true,
+    responderReport: {
+      clinicalImpression: rec.responderReport.clinicalImpression,
+      immediateActions: rec.responderReport.immediateActions,
+      recommendedEquipment: rec.responderReport.recommendedEquipment,
+      fieldPrecautions: rec.responderReport.fieldPrecautions,
+      evacuationRoute: zoneInfo.evacNote[displayLang],
     },
   };
 }

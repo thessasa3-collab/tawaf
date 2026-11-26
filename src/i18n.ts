@@ -175,6 +175,145 @@ export interface UIStrings {
   modalCall997: string;
   modalCall911: string;
   modalClose: string;
+  menuOpenLabel: string;
+  menuCloseLabel: string;
+  navOps: string;
+  localFallbackBtn: string;
+  sourceAiBadge: string;
+  sourceLocalBadge: string;
+  persistedBadge: string;
+  savingCaseText: string;
+  deleteCaseBtn: string;
+  confirmDeleteText: string;
+  cancelBtn: string;
+  statusLabel: string;
+  statusOpen: string;
+  statusDispatched: string;
+  statusResolved: string;
+  responderNotesLabel: string;
+  opsTitle: string;
+  opsSubtitle: string;
+  opsLoginTitle: string;
+  opsSetupTitle: string;
+  opsSetupDesc: string;
+  opsAdminTab: string;
+  opsResponderTab: string;
+  opsPasscodeLabel: string;
+  opsPasscodePlaceholder: string;
+  opsUsernameLabel: string;
+  opsPasswordLabel: string;
+  opsLoginBtn: string;
+  opsSetupBtn: string;
+  opsLogoutBtn: string;
+  opsSearchPlaceholder: string;
+  opsAllLevels: string;
+  opsAllZones: string;
+  opsAllStatuses: string;
+  opsRefreshBtn: string;
+  opsNoCases: string;
+  opsSaveBtn: string;
+  opsSavingBtn: string;
+  opsLoadToCardBtn: string;
+  opsNotesPlaceholder: string;
+  opsTeamTitle: string;
+  opsAddResponderBtn: string;
+  opsDisplayNameLabel: string;
+  opsRoleLabel: string;
+  opsRoleResponder: string;
+  opsRoleAdmin: string;
+  opsStatsTotal: string;
+  opsStatsCritical: string;
+  opsStatsOpen: string;
+  opsAuthError: string;
+  // GPS with Consent
+  gpsSectionTitle: string;
+  gpsConsentLabel: string;
+  gpsCaptureBtn: string;
+  gpsCapturingBtn: string;
+  gpsClearBtn: string;
+  gpsAccuracyLabel: string;
+  gpsNearestZoneNote: string;
+  gpsOutsideHaramNote: string;
+  gpsDeniedError: string;
+  gpsIframeBlockedError: string;
+  gpsHttpsError: string;
+  gpsTimeoutError: string;
+  gpsUnavailableError: string;
+  gpsUnsupportedError: string;
+  gpsOpenStandaloneBtn: string;
+  gpsManualBtn: string;
+  gpsManualDetailLabel: string;
+  gpsManualDetailPlaceholder: string;
+  gpsLabelShort: string;
+  // Voice Input
+  voiceStartBtn: string;
+  voiceStopBtn: string;
+  voiceTranscribingBtn: string;
+  voicePermissionError: string;
+  voiceIframeBlockedError: string;
+  voiceHttpsError: string;
+  voiceNoMicError: string;
+  voiceMicInUseError: string;
+  voiceTranscribeError: string;
+  voiceUnsupportedError: string;
+  // QR Code
+  qrTitle: string;
+  qrSubtitle: string;
+  qrOfflineReady: string;
+  qrCaseBannerTitle: string;
+  qrCaseBannerDesc: string;
+  // AI First-Aid Assistant
+  assistantBtn: string;
+  assistantTitle: string;
+  assistantSubtitle: string;
+  assistantPlaceholder: string;
+  assistantSendBtn: string;
+  assistantContextBadge: string;
+  assistantOfflineNotice: string;
+  assistantWelcome: string;
+  assistantQuick1: string;
+  assistantQuick2: string;
+  assistantQuick3: string;
+  // Offline First-Aid Guidelines
+  navOfflineGuide: string;
+  offlineGuideTitle: string;
+  offlineGuideSubtitle: string;
+  offlineGuideBadge: string;
+  offlineGuideSearchPlaceholder: string;
+  offlineCatAll: string;
+  offlineCatEmergency: string;
+  offlineCatHeat: string;
+  offlineCatTrauma: string;
+  offlineCatChronic: string;
+  offlineDoNotLabel: string;
+  // Accessibility & Read Aloud
+  a11yBtn: string;
+  a11yTitle: string;
+  a11ySubtitle: string;
+  a11yContrastLabel: string;
+  a11yContrastDesc: string;
+  a11yFontSizeLabel: string;
+  a11yFontNormal: string;
+  a11yFontLarge: string;
+  a11yFontXLarge: string;
+  a11yDyslexiaLabel: string;
+  a11yDyslexiaDesc: string;
+  a11yMotionLabel: string;
+  a11yMotionDesc: string;
+  a11yResetBtn: string;
+  readAloudBtn: string;
+  stopReadingBtn: string;
+  skipToMain: string;
+  // PWA & Offline Banner
+  pwaInstallBtn: string;
+  pwaInstalledBadge: string;
+  pwaIosTitle: string;
+  pwaIosStep1: string;
+  pwaIosStep2: string;
+  offlineBannerTitle: string;
+  offlineBannerDesc: string;
+  // Extra 3D views
+  viewSide: string;
 }
 
 export const UI_TRANSLATIONS: Record<LanguageCode, UIStrings> = {
@@ -271,6 +410,137 @@ export const UI_TRANSLATIONS: Record<LanguageCode, UIStrings> = {
     modalCall997: 'اتصال بالهلال الأحمر السعودي ٩٩٧',
     modalCall911: 'اتصال بالعمليات الموحدة ٩١١',
     modalClose: 'إغلاق',
+    menuOpenLabel: 'فتح القائمة',
+    menuCloseLabel: 'إغلاق القائمة',
+    navOps: 'لوحة المسعفين',
+    localFallbackBtn: 'استخدام الفرز المحلي الفوري الآن',
+    sourceAiBadge: 'تحليل ذكي (AI)',
+    sourceLocalBadge: 'فرز محلي فوري',
+    persistedBadge: 'محفوظ في السجل',
+    savingCaseText: 'جارٍ حفظ البلاغ في قاعدة البيانات...',
+    deleteCaseBtn: 'حذف البلاغ',
+    confirmDeleteText: 'تأكيد الحذف؟',
+    cancelBtn: 'إلغاء',
+    statusLabel: 'حالة البلاغ',
+    statusOpen: 'قيد الانتظار',
+    statusDispatched: 'تم توجيه الإسعاف',
+    statusResolved: 'مكتمل / تم التعامل',
+    responderNotesLabel: 'ملاحظات المسعف الميداني',
+    opsTitle: 'مركز متابعة البلاغات الميدانية (للمسعفين)',
+    opsSubtitle: 'عرض، تحديث حالة الاستجابة، تصفية وإدارة بلاغات الفرز المحفوظة',
+    opsLoginTitle: 'تسجيل دخول الطاقم الإسعافي والمشرفين',
+    opsSetupTitle: 'إعداد رمز المشرف الأول (تشغيل أولي)',
+    opsSetupDesc: 'لم يتم ضبط رمز مرور المشرف على الخادم بعد. أنشئ رمز مرور قوياً (٨ أحرف على الأقل) لحماية لوحة المسعفين.',
+    opsAdminTab: 'دخول المشرف',
+    opsResponderTab: 'حساب مسعف',
+    opsPasscodeLabel: 'رمز مرور المشرف',
+    opsPasscodePlaceholder: 'أدخل رمز المرور...',
+    opsUsernameLabel: 'اسم المستخدم',
+    opsPasswordLabel: 'كلمة المرور',
+    opsLoginBtn: 'دخول إلى اللوحة',
+    opsSetupBtn: 'تفعيل وحفظ رمز المشرف',
+    opsLogoutBtn: 'تسجيل الخروج',
+    opsSearchPlaceholder: 'بحث برقم البلاغ أو الأعراض...',
+    opsAllLevels: 'كل المستويات',
+    opsAllZones: 'كل المناطق',
+    opsAllStatuses: 'كل الحالات',
+    opsRefreshBtn: 'تحديث',
+    opsNoCases: 'لا توجد بلاغات مطابقة للفلاتر الحالية.',
+    opsSaveBtn: 'حفظ التحديث',
+    opsSavingBtn: 'جارٍ الحفظ...',
+    opsLoadToCardBtn: 'عرض في البطاقة والطباعة',
+    opsNotesPlaceholder: 'أضف ملاحظات الفحص الحيوي أو نقطة الاستلام...',
+    opsTeamTitle: 'إدارة حسابات المسعفين الميدانيين',
+    opsAddResponderBtn: 'إضافة حساب مسعف',
+    opsDisplayNameLabel: 'الاسم الكامل',
+    opsRoleLabel: 'الصلاحية',
+    opsRoleResponder: 'مسعف ميداني',
+    opsRoleAdmin: 'مشرف',
+    opsStatsTotal: 'إجمالي البلاغات',
+    opsStatsCritical: 'حالات حرجة (أحمر)',
+    opsStatsOpen: 'قيد الانتظار',
+    opsAuthError: 'تعذر التحقق من بيانات الدخول. يرجى المحاولة مرة أخرى.',
+    gpsSectionTitle: 'تحديد الموقع الجغرافي الدقيق (GPS)',
+    gpsConsentLabel: 'أوافق على مشاركة إحداثيات موقعي الجغرافي مع طاقم الإسعاف لتسريع الوصول إليّ',
+    gpsCaptureBtn: 'تحديد موقعي الحالي الآن',
+    gpsCapturingBtn: 'جارٍ تحديد الإحداثيات...',
+    gpsClearBtn: 'إلغاء الإحداثيات',
+    gpsAccuracyLabel: 'دقة التحديد',
+    gpsNearestZoneNote: 'أقرب نطاق مقترح في الحرم:',
+    gpsOutsideHaramNote: 'يبدو أن الموقع خارج النطاق المباشر للمسجد الحرام؛ يمكنك تعديل المنطقة يدوياً.',
+    gpsDeniedError: 'رفض المتصفح أو النظام الوصول للموقع (PERMISSION_DENIED). تأكد من تفعيل الموقع لـ Edge في Windows ثم أعد المحاولة أو حدد موقعك يدوياً.',
+    gpsIframeBlockedError: 'بيئة المعاينة المضمنة (iframe / Permissions Policy) تمنع الوصول التلقائي للموقع رغم تفعيله في المتصفح. افتح الرابط في نافذة مستقلة أو حدد موقعك يدوياً أدناه.',
+    gpsHttpsError: 'تحديد الموقع الجغرافي يتطلب اتصالاً آمناً (HTTPS). يرجى فتح التطبيق عبر HTTPS أو استخدام التحديد اليدوي.',
+    gpsTimeoutError: 'انتهت مهلة تحديد الموقع الجغرافي (TIMEOUT). يمكنك إعادة المحاولة أو تحديد موقعك يدوياً أدناه.',
+    gpsUnavailableError: 'تعذر على خدمة الموقع في الجهاز تحديد الإحداثيات حالياً (POSITION_UNAVAILABLE). يرجى تحديد موقعك يدوياً أدناه.',
+    gpsUnsupportedError: 'المتصفح الحالي لا يدعم خدمة تحديد الموقع الجغرافي.',
+    gpsOpenStandaloneBtn: 'فتح التطبيق في تبويب مستقل',
+    gpsManualBtn: 'تحديد الموقع يدوياً',
+    gpsManualDetailLabel: 'تفاصيل الموقع اليدوي (رقم الباب / الدور / العمود - اختياري)',
+    gpsManualDetailPlaceholder: 'مثال: باب الملك عبدالعزيز - الدور الأرضي - بجانب عمود ١٤',
+    gpsLabelShort: 'إحداثيات GPS المعتمدة',
+    voiceStartBtn: 'إدخال صوتي',
+    voiceStopBtn: 'إيقاف التسجيل',
+    voiceTranscribingBtn: 'جارٍ التحويل لنص...',
+    voicePermissionError: 'تم رفض إذن الميكروفون (NotAllowedError). يرجى السماح للمتصفح بالوصول للميكروفون أو كتابة الأعراض.',
+    voiceIframeBlockedError: 'سياسة الإطار المضمن (iframe / Permissions Policy) تمنع الميكروفون في نافذة المعاينة الحالية رغم تفعيله في Edge. افتح التطبيق في تبويب مستقل أو اكتب الأعراض.',
+    voiceHttpsError: 'تشغيل الميكروفون يتطلب رابط HTTPS آمن.',
+    voiceNoMicError: 'لم يتم العثور على ميكروفون متصل أو مفعّل في النظام (NotFoundError).',
+    voiceMicInUseError: 'الميكروفون قيد الاستخدام من تطبيق آخر أو تعذرت قراءته (NotReadableError).',
+    voiceTranscribeError: 'تعذر تحويل الصوت لنص. يمكنك التحدث بوضوح وإعادة المحاولة أو كتابة الأعراض.',
+    voiceUnsupportedError: 'الإدخال الصوتي غير مدعوم في هذا المتصفح.',
+    qrTitle: 'رمز QR لحالة المريض',
+    qrSubtitle: 'امسح الرمز ضوئياً لقراءة بيانات الفرز والموقع فوراً حتى دون إنترنت',
+    qrOfflineReady: 'يعمل دون إنترنت',
+    qrCaseBannerTitle: 'تم مسح رمز حالة مريض عبر QR',
+    qrCaseBannerDesc: 'رقم البلاغ المرجعي:',
+    assistantBtn: 'المساعد الذكي',
+    assistantTitle: 'المساعد الذكي للإسعافات الأولية',
+    assistantSubtitle: 'إرشادات فورية مساندة داخل المسجد الحرام وفق بروتوكولات السلامة',
+    assistantPlaceholder: 'اسأل عن خطوة إسعافية (مثل: كيف أساعد مصاباً بضربة شمس؟)...',
+    assistantSendBtn: 'إرسال',
+    assistantContextBadge: 'مرتبط ببيانات الحالة الحالية',
+    assistantOfflineNotice: 'أنت غير متصل بالإنترنت — يتم عرض الإرشادات الإسعافية المخزنة محلياً.',
+    assistantWelcome: 'مرحباً بك في المساعد الذكي للإسعافات الأولية بطواف. صف لي سؤالك أو اختر من الحالات السريعة أدناه، وتذكر الاتصال بـ ٩٩٧ فوراً عند فقدان الوعي أو ألم الصدر.',
+    assistantQuick1: 'كيف أتعامل مع ضربة شمس في الساحات؟',
+    assistantQuick2: 'ما خطوات وضعية الإفاقة لمغمى عليه؟',
+    assistantQuick3: 'كيف أسعف هبوط السكر لمعتمر واعٍ؟',
+    navOfflineGuide: 'دليل بلا إنترنت',
+    offlineGuideTitle: 'دليل الإسعافات الأولية المتاح دون إنترنت',
+    offlineGuideSubtitle: 'بروتوكولات طبية موثوقة محفوظة على جهازك للاستخدام الفوري داخل الحرم حتى عند انقطاع الشبكة',
+    offlineGuideBadge: 'متاح 100% دون إنترنت',
+    offlineGuideSearchPlaceholder: 'ابحث في الإرشادات (إغماء، ضربة شمس، نزيف، كسر، سكر)...',
+    offlineCatAll: 'الكل',
+    offlineCatEmergency: 'حالات حرجة',
+    offlineCatHeat: 'الحرارة والجفاف',
+    offlineCatTrauma: 'الإصابات والكسور',
+    offlineCatChronic: 'الأمراض المزمنة',
+    offlineDoNotLabel: 'تحذير — ممنوع القيام به:',
+    a11yBtn: 'سهولة الوصول',
+    a11yTitle: 'إعدادات سهولة الوصول لضعاف البصر وذوي الإعاقة',
+    a11ySubtitle: 'تخصيص التباين، حجم الخط، التباعد، والقراءة الصوتية الفورية',
+    a11yContrastLabel: 'وضع التباين العالي',
+    a11yContrastDesc: 'خلفية داكنة وحدود ذهبية عالية الوضوح لضعاف البصر',
+    a11yFontSizeLabel: 'حجم النص والعناوين',
+    a11yFontNormal: 'قياسي',
+    a11yFontLarge: 'كبير +١٢٪',
+    a11yFontXLarge: 'كبير جداً +٢٥٪',
+    a11yDyslexiaLabel: 'تباعد القراءة المريح',
+    a11yDyslexiaDesc: 'زيادة المسافات بين السطور والكلمات لتسهيل القراءة',
+    a11yMotionLabel: 'تقليل الحركة والانتقالات',
+    a11yMotionDesc: 'إيقاف المؤثرات المتحركة لراحة العين',
+    a11yResetBtn: 'استعادة الإعدادات الافتراضية',
+    readAloudBtn: 'قراءة صوتية',
+    stopReadingBtn: 'إيقاف الصوت',
+    skipToMain: 'تجاوز إلى محتوى الفرز الرئيسي',
+    pwaInstallBtn: 'تثبيت التطبيق',
+    pwaInstalledBadge: 'مثبّت كتطبيق',
+    pwaIosTitle: 'تثبيت تطبيق طواف على iPhone / iPad',
+    pwaIosStep1: '١. اضغط على زر المشاركة (Share) في شريط متصفح Safari بالأسفل.',
+    pwaIosStep2: '٢. اختر "إضافة إلى الشاشة الرئيسية" (Add to Home Screen) ثم اضغط إضافة.',
+    offlineBannerTitle: 'أنت تعمل الآن في وضع عدم الاتصال (Offline Mode)',
+    offlineBannerDesc: 'الفرز المحلي السريع، القراءة الصوتية، رمز QR، ودليل الإسعافات الأولية تعمل كاملة دون إنترنت.',
+    viewSide: 'جانبية',
   },
   en: {
     brandName: 'Tawaf',
@@ -365,6 +635,137 @@ export const UI_TRANSLATIONS: Record<LanguageCode, UIStrings> = {
     modalCall997: 'Call Red Crescent 997',
     modalCall911: 'Call Unified Security 911',
     modalClose: 'Close',
+    menuOpenLabel: 'Open menu',
+    menuCloseLabel: 'Close menu',
+    navOps: 'Responder Desk',
+    localFallbackBtn: 'Run Instant Local Triage Now',
+    sourceAiBadge: 'AI Triage',
+    sourceLocalBadge: 'Local Rapid Triage',
+    persistedBadge: 'Saved to Server',
+    savingCaseText: 'Saving case record...',
+    deleteCaseBtn: 'Delete Case',
+    confirmDeleteText: 'Confirm delete?',
+    cancelBtn: 'Cancel',
+    statusLabel: 'Case Status',
+    statusOpen: 'Open',
+    statusDispatched: 'Dispatched',
+    statusResolved: 'Resolved',
+    responderNotesLabel: 'Paramedic Field Notes',
+    opsTitle: 'Haram Responder Operations Desk',
+    opsSubtitle: 'View, filter, update dispatch status, and manage saved triage cases',
+    opsLoginTitle: 'Medical Responder & Supervisor Sign-In',
+    opsSetupTitle: 'First-Run Supervisor Setup',
+    opsSetupDesc: 'No server supervisor passcode is configured yet. Claim a strong passcode (min 8 chars) to protect the Responder Desk.',
+    opsAdminTab: 'Supervisor Passcode',
+    opsResponderTab: 'Responder Account',
+    opsPasscodeLabel: 'Supervisor Passcode',
+    opsPasscodePlaceholder: 'Enter passcode...',
+    opsUsernameLabel: 'Username',
+    opsPasswordLabel: 'Password',
+    opsLoginBtn: 'Sign In to Desk',
+    opsSetupBtn: 'Claim Supervisor Passcode',
+    opsLogoutBtn: 'Sign Out',
+    opsSearchPlaceholder: 'Search by case ID or symptoms...',
+    opsAllLevels: 'All Priorities',
+    opsAllZones: 'All Zones',
+    opsAllStatuses: 'All Statuses',
+    opsRefreshBtn: 'Refresh',
+    opsNoCases: 'No triage cases match the current filters.',
+    opsSaveBtn: 'Save Update',
+    opsSavingBtn: 'Saving...',
+    opsLoadToCardBtn: 'Open in Card & Print',
+    opsNotesPlaceholder: 'Add vitals, ambulance unit, or handover notes...',
+    opsTeamTitle: 'Responder Team Accounts',
+    opsAddResponderBtn: 'Add Responder',
+    opsDisplayNameLabel: 'Full Name',
+    opsRoleLabel: 'Role',
+    opsRoleResponder: 'Responder',
+    opsRoleAdmin: 'Supervisor (Admin)',
+    opsStatsTotal: 'Total Cases',
+    opsStatsCritical: 'Critical (RED)',
+    opsStatsOpen: 'Open Queue',
+    opsAuthError: 'Unable to verify credentials. Please try again.',
+    gpsSectionTitle: 'Precise GPS Location (With Patient Consent)',
+    gpsConsentLabel: 'I consent to share my GPS coordinates with medical responders to speed up arrival',
+    gpsCaptureBtn: 'Capture Current GPS',
+    gpsCapturingBtn: 'Locating GPS...',
+    gpsClearBtn: 'Remove GPS',
+    gpsAccuracyLabel: 'Accuracy',
+    gpsNearestZoneNote: 'Nearest suggested Haram zone:',
+    gpsOutsideHaramNote: 'Coordinates appear outside immediate Al-Haram perimeter; you may adjust zone manually.',
+    gpsDeniedError: 'Location permission denied (PERMISSION_DENIED). Enable location for Edge in Windows or select your location manually.',
+    gpsIframeBlockedError: 'Embedded preview iframe (Permissions Policy) is blocking GPS even though browser permissions are enabled. Open in a standalone tab or enter your location manually below.',
+    gpsHttpsError: 'Geolocation requires a secure HTTPS connection. Please open over HTTPS or select your location manually.',
+    gpsTimeoutError: 'Location request timed out (TIMEOUT). You can retry or enter your Haram location manually below.',
+    gpsUnavailableError: 'Device location service could not determine coordinates right now (POSITION_UNAVAILABLE). Please select your location manually.',
+    gpsUnsupportedError: 'Geolocation is not supported by this browser.',
+    gpsOpenStandaloneBtn: 'Open in Standalone Tab',
+    gpsManualBtn: 'Enter Location Manually',
+    gpsManualDetailLabel: 'Manual Location Details (Gate / Floor / Pillar - Optional)',
+    gpsManualDetailPlaceholder: 'e.g. King Abdulaziz Gate - Ground Floor - Pillar 14',
+    gpsLabelShort: 'Consented GPS',
+    voiceStartBtn: 'Voice Input',
+    voiceStopBtn: 'Stop Recording',
+    voiceTranscribingBtn: 'Transcribing...',
+    voicePermissionError: 'Microphone access denied (NotAllowedError). Allow mic permission in Edge/Windows or type symptoms.',
+    voiceIframeBlockedError: 'Embedded preview iframe (Permissions Policy) blocks microphone access here despite browser settings. Open in a standalone tab or type symptoms.',
+    voiceHttpsError: 'Microphone access requires a secure HTTPS connection.',
+    voiceNoMicError: 'No active microphone input device detected (NotFoundError).',
+    voiceMicInUseError: 'Microphone is busy in another app or hardware failed to start (NotReadableError).',
+    voiceTranscribeError: 'Unable to transcribe audio right now. Please retry or type symptoms.',
+    voiceUnsupportedError: 'Voice input is not supported on this browser.',
+    qrTitle: 'Patient Case QR Code',
+    qrSubtitle: 'Scan to read triage priority, symptoms & GPS instantly even offline',
+    qrOfflineReady: 'Works Offline',
+    qrCaseBannerTitle: 'Case Reference Loaded from QR Scan',
+    qrCaseBannerDesc: 'Reference ID:',
+    assistantBtn: 'AI Assistant',
+    assistantTitle: 'Smart First-Aid Assistant',
+    assistantSubtitle: 'Immediate Al-Haram bystander guidance aligned with 997 protocols',
+    assistantPlaceholder: 'Ask a first-aid question (e.g. how to cool heatstroke?)...',
+    assistantSendBtn: 'Send',
+    assistantContextBadge: 'Linked to Active Patient Triage',
+    assistantOfflineNotice: 'You are offline — showing locally cached first-aid guidance.',
+    assistantWelcome: 'Welcome to the Tawaf Smart First-Aid Assistant. Ask any emergency first-aid question or pick a quick scenario below. Always call 997 immediately for chest pain or unconsciousness.',
+    assistantQuick1: 'How do I treat heatstroke in the courtyard?',
+    assistantQuick2: 'How to place an unconscious person in recovery position?',
+    assistantQuick3: 'First aid for low blood sugar in an alert pilgrim?',
+    navOfflineGuide: 'Offline Guide',
+    offlineGuideTitle: 'Offline-Available First-Aid Guidelines',
+    offlineGuideSubtitle: 'Verified emergency protocols stored locally on your device for instant access inside Al-Haram without internet',
+    offlineGuideBadge: '100% Available Offline',
+    offlineGuideSearchPlaceholder: 'Search protocols (heatstroke, fainting, bleeding, fracture)...',
+    offlineCatAll: 'All',
+    offlineCatEmergency: 'Critical',
+    offlineCatHeat: 'Heat & Hydration',
+    offlineCatTrauma: 'Trauma & Bleeding',
+    offlineCatChronic: 'Chronic Care',
+    offlineDoNotLabel: 'Warning — Do NOT:',
+    a11yBtn: 'Accessibility',
+    a11yTitle: 'Accessibility Options for Visual & Motor Needs',
+    a11ySubtitle: 'Customize high contrast, text size, spacing, and offline voice read-aloud',
+    a11yContrastLabel: 'High Contrast Mode',
+    a11yContrastDesc: 'Dark high-legibility surface with bright gold outlines',
+    a11yFontSizeLabel: 'Text & Heading Scale',
+    a11yFontNormal: 'Standard',
+    a11yFontLarge: 'Large +12%',
+    a11yFontXLarge: 'Extra +25%',
+    a11yDyslexiaLabel: 'Comfortable Reading Spacing',
+    a11yDyslexiaDesc: 'Wider line height and word spacing for easier scanning',
+    a11yMotionLabel: 'Reduce Motion',
+    a11yMotionDesc: 'Disable transitions and animated shimmer effects',
+    a11yResetBtn: 'Reset Defaults',
+    readAloudBtn: 'Read Aloud',
+    stopReadingBtn: 'Stop Audio',
+    skipToMain: 'Skip to Main Triage Workspace',
+    pwaInstallBtn: 'Install App',
+    pwaInstalledBadge: 'App Installed',
+    pwaIosTitle: 'Install Tawaf App on iPhone / iPad',
+    pwaIosStep1: '1. Tap the Share button in Safari at the bottom of your screen.',
+    pwaIosStep2: '2. Choose "Add to Home Screen" and tap Add.',
+    offlineBannerTitle: 'Offline Mode Active',
+    offlineBannerDesc: 'Local rapid triage, voice read-aloud, QR codes, and first-aid protocols remain fully operational.',
+    viewSide: 'Side View',
   },
   ur: {
     brandName: 'طواف',
@@ -459,6 +860,137 @@ export const UI_TRANSLATIONS: Record<LanguageCode, UIStrings> = {
     modalCall997: 'ہلال احمر 997 پر کال کریں',
     modalCall911: 'یونیفائیڈ سکیورٹی 911 پر کال کریں',
     modalClose: 'بند کریں',
+    menuOpenLabel: 'مینو کھولیں',
+    menuCloseLabel: 'مینو بند کریں',
+    navOps: 'طبی عملہ ڈیسک',
+    localFallbackBtn: 'فوری مقامی درجہ بندی استعمال کریں',
+    sourceAiBadge: 'AI تجزیہ',
+    sourceLocalBadge: 'فوری مقامی درجہ بندی',
+    persistedBadge: 'سرور پر محفوظ',
+    savingCaseText: 'کیس محفوظ کیا جا رہا ہے...',
+    deleteCaseBtn: 'کیس حذف کریں',
+    confirmDeleteText: 'حذف کی تصدیق کریں؟',
+    cancelBtn: 'منسوخ کریں',
+    statusLabel: 'کیس کی صورتحال',
+    statusOpen: 'زیرِ التواء',
+    statusDispatched: 'ایمبولینس روانہ',
+    statusResolved: 'مکمل / نمٹا دیا گیا',
+    responderNotesLabel: 'پیرامیڈک کے نوٹس',
+    opsTitle: 'حرم طبی عملہ آپریشنز ڈیسک',
+    opsSubtitle: 'محفوظ کیسز دیکھیں، فلٹر کریں، صورتحال اپڈیٹ کریں اور ریکارڈ منظم کریں',
+    opsLoginTitle: 'طبی عملے اور سپروائزر کا لاگ ان',
+    opsSetupTitle: 'ابتدائی سپروائزر پاس کوڈ سیٹ اپ',
+    opsSetupDesc: 'سرور پر ابھی سپروائزر پاس کوڈ سیٹ نہیں ہے۔ ڈیسک کو محفوظ بنانے کے لیے کم از کم 8 حروف کا پاس کوڈ مقرر کریں۔',
+    opsAdminTab: 'سپروائزر پاس کوڈ',
+    opsResponderTab: 'طبی عملہ اکاؤنٹ',
+    opsPasscodeLabel: 'سپروائزر پاس کوڈ',
+    opsPasscodePlaceholder: 'پاس کوڈ درج کریں...',
+    opsUsernameLabel: 'صارف نام',
+    opsPasswordLabel: 'پاس ورڈ',
+    opsLoginBtn: 'ڈیسک میں لاگ ان کریں',
+    opsSetupBtn: 'پاس کوڈ محفوظ کریں',
+    opsLogoutBtn: 'لاگ آؤٹ',
+    opsSearchPlaceholder: 'کیس نمبر یا علامات تلاش کریں...',
+    opsAllLevels: 'تمام ترجیحات',
+    opsAllZones: 'تمام مقامات',
+    opsAllStatuses: 'تمام حالات',
+    opsRefreshBtn: 'تازہ کریں',
+    opsNoCases: 'موجودہ فلٹرز کے مطابق کوئی کیس نہیں ملا۔',
+    opsSaveBtn: 'تبدیلی محفوظ کریں',
+    opsSavingBtn: 'محفوظ ہو رہا ہے...',
+    opsLoadToCardBtn: 'کارڈ اور پرنٹ میں کھولیں',
+    opsNotesPlaceholder: 'وائٹلز یا ایمبولینس کی تفصیل لکھیں...',
+    opsTeamTitle: 'طبی عملے کے اکاؤنٹس',
+    opsAddResponderBtn: 'نیا اکاؤنٹ شامل کریں',
+    opsDisplayNameLabel: 'پورا نام',
+    opsRoleLabel: 'کردار',
+    opsRoleResponder: 'پیرامیڈک',
+    opsRoleAdmin: 'سپروائزر',
+    opsStatsTotal: 'کل کیسز',
+    opsStatsCritical: 'انتہائی سنگین',
+    opsStatsOpen: 'زیرِ التواء',
+    opsAuthError: 'لاگ ان کی تصدیق نہیں ہو سکی۔ دوبارہ کوشش کریں۔',
+    gpsSectionTitle: 'مریض کی رضامندی سے GPS مقام کا تعین',
+    gpsConsentLabel: 'میں فوری مدد کے لیے طبی عملے کے ساتھ اپنا GPS مقام شیئر کرنے کی اجازت دیتا ہوں',
+    gpsCaptureBtn: 'موجودہ GPS مقام حاصل کریں',
+    gpsCapturingBtn: 'مقام تلاش کیا جا رہا ہے...',
+    gpsClearBtn: 'مقام ہٹائیں',
+    gpsAccuracyLabel: 'درستگی',
+    gpsNearestZoneNote: 'حرم میں قریبی تجویز کردہ مقام:',
+    gpsOutsideHaramNote: 'مقام مسجد الحرام کے براہِ راست احاطے سے باہر لگتا ہے؛ آپ مقام دستی طور پر منتخب کر سکتے ہیں۔',
+    gpsDeniedError: 'لوکیشن کی اجازت مسترد کر دی گئی (PERMISSION_DENIED)۔ براؤزر اور ونڈوز میں اجازت فعال کریں یا دستی مقام درج کریں۔',
+    gpsIframeBlockedError: 'پری ویو فریم (iframe Permissions Policy) لوکیشن تک رسائی روک رہا ہے۔ ایپ کو نئے ٹیب میں کھولیں یا نیچے دستی مقام منتخب کریں۔',
+    gpsHttpsError: 'جی پی ایس لوکیشن کے لیے محفوظ HTTPS کنکشن درکار ہے۔',
+    gpsTimeoutError: 'لوکیشن حاصل کرنے کا وقت ختم ہو گیا (TIMEOUT)۔ دوبارہ کوشش کریں یا دستی مقام درج کریں۔',
+    gpsUnavailableError: 'اس وقت ڈیوائس لوکیشن دستیاب نہیں ہے (POSITION_UNAVAILABLE)۔ براہِ کرم دستی مقام منتخب کریں۔',
+    gpsUnsupportedError: 'اس براؤزر میں GPS دستیاب نہیں ہے۔',
+    gpsOpenStandaloneBtn: 'نئے ٹیب میں کھولیں',
+    gpsManualBtn: 'مقام دستی درج کریں',
+    gpsManualDetailLabel: 'دستی مقام کی تفصیل (گیٹ / منزل / ستون نمبر - اختیاری)',
+    gpsManualDetailPlaceholder: 'مثال: باب الملک عبدالعزیز - گراؤنڈ فلور - ستون 14',
+    gpsLabelShort: 'تصدیق شدہ GPS',
+    voiceStartBtn: 'آواز سے لکھیں',
+    voiceStopBtn: 'ریکارڈنگ روکیں',
+    voiceTranscribingBtn: 'تحریر میں تبدیلی...',
+    voicePermissionError: 'مائیکروفون کی اجازت مسترد ہوئی (NotAllowedError)۔ براؤزر/ونڈوز میں مائیکروفون فعال کریں۔',
+    voiceIframeBlockedError: 'ایمبیڈڈ پری ویو فریم (iframe Permissions Policy) مائیکروفون کو روک رہا ہے۔ نئے ٹیب میں کھولیں یا علامات ٹائپ کریں۔',
+    voiceHttpsError: 'مائیکروفون کے لیے محفوظ HTTPS کنکشن ضروری ہے۔',
+    voiceNoMicError: 'کوئی فعال مائیکروفون ڈیوائس نہیں ملی (NotFoundError)۔',
+    voiceMicInUseError: 'مائیکروفون کسی اور ایپ میں مصروف ہے (NotReadableError)۔',
+    voiceTranscribeError: 'آواز کو تحریر میں تبدیل نہیں کیا جا سکا۔ دوبارہ کوشش کریں یا ٹائپ کریں۔',
+    voiceUnsupportedError: 'اس براؤزر میں وائس ان پٹ دستیاب نہیں ہے۔',
+    qrTitle: 'مریض کی حالت کا QR کوڈ',
+    qrSubtitle: 'انٹرنیٹ کے بغیر بھی فوری تفصیلات اور مقام پڑھنے کے لیے اسکین کریں',
+    qrOfflineReady: 'آف لائن دستیاب',
+    qrCaseBannerTitle: 'QR اسکین سے کیس نمبر موصول ہوا',
+    qrCaseBannerDesc: 'کیس ریفرنس:',
+    assistantBtn: 'سمارٹ اسسٹنٹ',
+    assistantTitle: 'ابتدائی طبی امداد کا سمارٹ اسسٹنٹ',
+    assistantSubtitle: 'مسجد الحرام میں 997 پروٹوکول کے مطابق فوری رہنمائی',
+    assistantPlaceholder: 'طبی امداد سے متعلق سوال پوچھیں (مثلاً: ہیٹ اسٹروک میں کیا کریں؟)...',
+    assistantSendBtn: 'بھیجیں',
+    assistantContextBadge: 'موجودہ کیس سے منسلک',
+    assistantOfflineNotice: 'آپ آف لائن ہیں — مقامی طور پر محفوظ ابتدائی طبی ہدایات دکھائی جا رہی ہیں۔',
+    assistantWelcome: 'طواف سمارٹ فرسٹ ایڈ اسسٹنٹ میں خوش آمدید۔ اپنا سوال پوچھیں یا نیچے سے عام حالت منتخب کریں۔ بے ہوشی یا سینے کے درد میں فوراً 997 پر کال کریں۔',
+    assistantQuick1: 'صحن میں ہیٹ اسٹروک کا فوری علاج کیسے کریں؟',
+    assistantQuick2: 'بے ہوش شخص کو ریکوری پوزیشن میں کیسے لٹائیں؟',
+    assistantQuick3: 'ہوش میں موجود معتمر کی شوگر کم ہونے پر کیا کریں؟',
+    navOfflineGuide: 'آف لائن گائیڈ',
+    offlineGuideTitle: 'انٹرنیٹ کے بغیر دستیاب ابتدائی طبی ہدایات',
+    offlineGuideSubtitle: 'نیٹ ورک نہ ہونے پر بھی حرم میں فوری استعمال کے لیے آپ کے آلے پر محفوظ طبی رہنمائی',
+    offlineGuideBadge: '100% آف لائن دستیاب',
+    offlineGuideSearchPlaceholder: 'ہدایات تلاش کریں (بے ہوشی، ہیٹ اسٹروک، خون، فریکچر)...',
+    offlineCatAll: 'تمام',
+    offlineCatEmergency: 'ہنگامی حالات',
+    offlineCatHeat: 'گرمی اور پانی کی کمی',
+    offlineCatTrauma: 'چوٹ اور خون',
+    offlineCatChronic: 'دائمی امراض',
+    offlineDoNotLabel: 'انتباہ — ہرگز نہ کریں:',
+    a11yBtn: 'رسائی (Accessibility)',
+    a11yTitle: 'بصری و جسمانی معذوری کے حامل افراد کے لیے سہولیات',
+    a11ySubtitle: 'زیادہ کنٹراسٹ، فونٹ سائز، الفاظ کا فاصلہ اور صوتی تلاوت کی ترتیبات',
+    a11yContrastLabel: 'ہائی کنٹراسٹ موڈ',
+    a11yContrastDesc: 'کمزور بینائی کے لیے گہرا پس منظر اور نمایاں سنہری لکیریں',
+    a11yFontSizeLabel: 'تحریر کا سائز',
+    a11yFontNormal: 'معمول',
+    a11yFontLarge: 'بڑا +12%',
+    a11yFontXLarge: 'بہت بڑا +25%',
+    a11yDyslexiaLabel: 'پڑھنے میں آسانی کا فاصلہ',
+    a11yDyslexiaDesc: 'سطروں اور الفاظ کے درمیان اضافی فاصلہ',
+    a11yMotionLabel: 'حرکت کم کریں',
+    a11yMotionDesc: 'اینیمیشن اور چمکدار اثرات بند کریں',
+    a11yResetBtn: 'پہلے جیسا کریں',
+    readAloudBtn: 'آواز میں سنیں',
+    stopReadingBtn: 'آواز بند کریں',
+    skipToMain: 'مرکزی حصے پر جائیں',
+    pwaInstallBtn: 'ایپ انسٹال کریں',
+    pwaInstalledBadge: 'ایپ انسٹال ہے',
+    pwaIosTitle: 'iPhone / iPad پر طواف ایپ انسٹال کریں',
+    pwaIosStep1: '1. نیچے سفاری (Safari) بار میں Share بٹن پر ٹیپ کریں۔',
+    pwaIosStep2: '2. "Add to Home Screen" منتخب کر کے Add دبائیں۔',
+    offlineBannerTitle: 'آپ آف لائن موڈ میں کام کر رہے ہیں',
+    offlineBannerDesc: 'مقامی درجہ بندی، صوتی تلاوت، QR کوڈ اور ابتدائی طبی گائیڈ مکمل طور پر کام کر رہے ہیں۔',
+    viewSide: 'سائیڈ کا رخ',
   },
   id: {
     brandName: 'Tawaf',
@@ -553,6 +1085,137 @@ export const UI_TRANSLATIONS: Record<LanguageCode, UIStrings> = {
     modalCall997: 'Hubungi Bulan Sabit Merah 997',
     modalCall911: 'Hubungi Keamanan Terpadu 911',
     modalClose: 'Tutup',
+    menuOpenLabel: 'Buka menu',
+    menuCloseLabel: 'Tutup menu',
+    navOps: 'Meja Paramedis',
+    localFallbackBtn: 'Gunakan Triase Lokal Instan',
+    sourceAiBadge: 'Analisis AI',
+    sourceLocalBadge: 'Triase Lokal Cepat',
+    persistedBadge: 'Tersimpan di Server',
+    savingCaseText: 'Menyimpan laporan kasus...',
+    deleteCaseBtn: 'Hapus Kasus',
+    confirmDeleteText: 'Konfirmasi hapus?',
+    cancelBtn: 'Batal',
+    statusLabel: 'Status Kasus',
+    statusOpen: 'Menunggu',
+    statusDispatched: 'Ambulans Dikirim',
+    statusResolved: 'Selesai',
+    responderNotesLabel: 'Catatan Lapangan Paramedis',
+    opsTitle: 'Pusat Operasi Paramedis Masjidil Haram',
+    opsSubtitle: 'Lihat, filter, perbarui status evakuasi, dan kelola kasus triase tersimpan',
+    opsLoginTitle: 'Masuk Petugas Medis & Pengawas',
+    opsSetupTitle: 'Pengaturan Awal Kode Pengawas',
+    opsSetupDesc: 'Belum ada kode pengawas di server. Buat kode sandi kuat (minimal 8 karakter) untuk mengamankan panel petugas.',
+    opsAdminTab: 'Kode Pengawas',
+    opsResponderTab: 'Akun Petugas',
+    opsPasscodeLabel: 'Kode Sandi Pengawas',
+    opsPasscodePlaceholder: 'Masukkan kode sandi...',
+    opsUsernameLabel: 'Nama Pengguna',
+    opsPasswordLabel: 'Kata Sandi',
+    opsLoginBtn: 'Masuk ke Panel',
+    opsSetupBtn: 'Simpan Kode Pengawas',
+    opsLogoutBtn: 'Keluar',
+    opsSearchPlaceholder: 'Cari ID kasus atau gejala...',
+    opsAllLevels: 'Semua Prioritas',
+    opsAllZones: 'Semua Area',
+    opsAllStatuses: 'Semua Status',
+    opsRefreshBtn: 'Muat Ulang',
+    opsNoCases: 'Tidak ada kasus triase yang sesuai dengan filter.',
+    opsSaveBtn: 'Simpan Pembaruan',
+    opsSavingBtn: 'Menyimpan...',
+    opsLoadToCardBtn: 'Tampilkan di Kartu & Cetak',
+    opsNotesPlaceholder: 'Tambahkan catatan tanda vital atau unit ambulans...',
+    opsTeamTitle: 'Akun Tim Medis Lapangan',
+    opsAddResponderBtn: 'Tambah Petugas',
+    opsDisplayNameLabel: 'Nama Lengkap',
+    opsRoleLabel: 'Peran',
+    opsRoleResponder: 'Paramedis',
+    opsRoleAdmin: 'Pengawas (Admin)',
+    opsStatsTotal: 'Total Kasus',
+    opsStatsCritical: 'Kritis (MERAH)',
+    opsStatsOpen: 'Antrean Terbuka',
+    opsAuthError: 'Gagal memverifikasi kredensial. Silakan coba lagi.',
+    gpsSectionTitle: 'Lokasi GPS Akurat (Dengan Izin Pasien)',
+    gpsConsentLabel: 'Saya setuju membagikan koordinat GPS kepada tim medis untuk mempercepat pertolongan',
+    gpsCaptureBtn: 'Ambil Lokasi GPS Sekarang',
+    gpsCapturingBtn: 'Mencari koordinat...',
+    gpsClearBtn: 'Hapus GPS',
+    gpsAccuracyLabel: 'Akurasi',
+    gpsNearestZoneNote: 'Zona Masjidil Haram terdekat:',
+    gpsOutsideHaramNote: 'Koordinat berada di luar area Masjidil Haram; Anda dapat memilih zona secara manual.',
+    gpsDeniedError: 'Izin lokasi ditolak (PERMISSION_DENIED). Aktifkan izin lokasi di Edge & Windows atau pilih lokasi manual.',
+    gpsIframeBlockedError: 'Iframe pratinjau (Permissions Policy) memblokir akses GPS meski izin browser aktif. Buka di tab mandiri atau pilih lokasi secara manual.',
+    gpsHttpsError: 'Geolokasi memerlukan koneksi HTTPS yang aman.',
+    gpsTimeoutError: 'Waktu pencarian lokasi habis (TIMEOUT). Coba lagi atau masukkan lokasi secara manual.',
+    gpsUnavailableError: 'Layanan lokasi perangkat tidak dapat menentukan koordinat saat ini (POSITION_UNAVAILABLE). Silakan pilih secara manual.',
+    gpsUnsupportedError: 'Geolokasi tidak didukung oleh browser ini.',
+    gpsOpenStandaloneBtn: 'Buka di Tab Mandiri',
+    gpsManualBtn: 'Isi Lokasi Manual',
+    gpsManualDetailLabel: 'Detail Lokasi Manual (Pintu / Lantai / Pilar - Opsional)',
+    gpsManualDetailPlaceholder: 'Contoh: Pintu Raja Abdulaziz - Lantai Dasar - Pilar 14',
+    gpsLabelShort: 'GPS Terverifikasi',
+    voiceStartBtn: 'Input Suara',
+    voiceStopBtn: 'Hentikan Rekam',
+    voiceTranscribingBtn: 'Mengubah ke teks...',
+    voicePermissionError: 'Izin mikrofon ditolak (NotAllowedError). Aktifkan mikrofon di Edge/Windows atau ketik gejala.',
+    voiceIframeBlockedError: 'Iframe pratinjau (Permissions Policy) memblokir akses mikrofon di jendela ini. Buka di tab mandiri atau ketik gejala.',
+    voiceHttpsError: 'Akses mikrofon memerlukan koneksi HTTPS yang aman.',
+    voiceNoMicError: 'Perangkat mikrofon aktif tidak ditemukan (NotFoundError).',
+    voiceMicInUseError: 'Mikrofon sedang digunakan aplikasi lain atau gagal diakses (NotReadableError).',
+    voiceTranscribeError: 'Gagal mengubah suara ke teks. Silakan coba lagi atau ketik gejala.',
+    voiceUnsupportedError: 'Input suara tidak didukung di browser ini.',
+    qrTitle: 'Kode QR Kondisi Pasien',
+    qrSubtitle: 'Pindai untuk membaca prioritas triase, keluhan & GPS seketika bahkan offline',
+    qrOfflineReady: 'Aktif Offline',
+    qrCaseBannerTitle: 'Referensi Kasus dari Pindai QR',
+    qrCaseBannerDesc: 'ID Referensi:',
+    assistantBtn: 'Asisten Pintar',
+    assistantTitle: 'Asisten Pintar Pertolongan Pertama',
+    assistantSubtitle: 'Panduan cepat di Masjidil Haram sesuai protokol 997',
+    assistantPlaceholder: 'Tanyakan langkah pertolongan pertama (mis. cara atasi heatstroke)...',
+    assistantSendBtn: 'Kirim',
+    assistantContextBadge: 'Terhubung ke Kasus Aktif',
+    assistantOfflineNotice: 'Anda sedang offline — menampilkan panduan pertolongan pertama tersimpan lokal.',
+    assistantWelcome: 'Selamat datang di Asisten Pertolongan Pertama Tawaf. Ajukan pertanyaan darurat atau pilih topik cepat di bawah. Hubungi 997 segera untuk nyeri dada atau pingsan.',
+    assistantQuick1: 'Bagaimana menangani heatstroke di pelataran?',
+    assistantQuick2: 'Cara memposisikan pasien pingsan ke posisi pemulihan?',
+    assistantQuick3: 'Pertolongan gula darah rendah bagi jamaah yang sadar?',
+    navOfflineGuide: 'Panduan Offline',
+    offlineGuideTitle: 'Panduan Pertolongan Pertama Offline',
+    offlineGuideSubtitle: 'Protokol medis terverifikasi yang tersimpan di perangkat untuk akses instan tanpa internet',
+    offlineGuideBadge: '100% Tersedia Offline',
+    offlineGuideSearchPlaceholder: 'Cari panduan (heatstroke, pingsan, pendarahan, patah)...',
+    offlineCatAll: 'Semua',
+    offlineCatEmergency: 'Kritis',
+    offlineCatHeat: 'Panas & Dehidrasi',
+    offlineCatTrauma: 'Cedera & Luka',
+    offlineCatChronic: 'Penyakit Kronis',
+    offlineDoNotLabel: 'Peringatan — JANGAN lakukan:',
+    a11yBtn: 'Aksesibilitas',
+    a11yTitle: 'Aksesibilitas untuk Tunanetra & Disabilitas',
+    a11ySubtitle: 'Atur kontras tinggi, ukuran teks, jarak baca, dan pembacaan suara offline',
+    a11yContrastLabel: 'Mode Kontras Tinggi',
+    a11yContrastDesc: 'Latar gelap kontras tinggi dengan garis tepi emas terang',
+    a11yFontSizeLabel: 'Ukuran Teks',
+    a11yFontNormal: 'Normal',
+    a11yFontLarge: 'Besar +12%',
+    a11yFontXLarge: 'Sangat Besar +25%',
+    a11yDyslexiaLabel: 'Jarak Baca Nyaman',
+    a11yDyslexiaDesc: 'Lebarkan jarak baris dan kata agar lebih mudah dibaca',
+    a11yMotionLabel: 'Kurangi Gerakan',
+    a11yMotionDesc: 'Matikan animasi dan efek kilau visual',
+    a11yResetBtn: 'Atur Ulang',
+    readAloudBtn: 'Bacakan Suara',
+    stopReadingBtn: 'Hentikan Suara',
+    skipToMain: 'Langsung ke Area Triase Utama',
+    pwaInstallBtn: 'Instal Aplikasi',
+    pwaInstalledBadge: 'Aplikasi Terpasang',
+    pwaIosTitle: 'Instal Aplikasi Tawaf di iPhone / iPad',
+    pwaIosStep1: '1. Ketuk tombol Bagikan (Share) pada bilah bawah Safari.',
+    pwaIosStep2: '2. Pilih "Tambahkan ke Layar Utama" lalu ketuk Tambah.',
+    offlineBannerTitle: 'Mode Offline Aktif',
+    offlineBannerDesc: 'Triase cepat lokal, pembacaan suara, kode QR, dan panduan medis tetap berjalan penuh.',
+    viewSide: 'Tampak Samping',
   },
 };
 

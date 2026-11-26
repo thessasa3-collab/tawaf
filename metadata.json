@@ -1,6 +1,6 @@
 {
   "name": "طواف - الفرز الإسعافي الأولي",
   "description": "منصة إسعافات أولية للفرز الأولي حسب حالة المريض للمتواجدين في المسجد الحرام بمكة المكرمة",
-  "requestFramePermissions": [],
+  "requestFramePermissions": ["geolocation", "microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -29,13 +29,79 @@ const ALL_BODY_PARTS: BodyPartId[] = [
   'feet',
 ];
 
-const DEFAULT_CAM_POS = new THREE.Vector3(0, 1.18, 3.05);
-const FRONT_CAM_POS = new THREE.Vector3(0, 1.18, 3.05);
-const BACK_CAM_POS = new THREE.Vector3(0, 1.18, -3.05);
+const DEFAULT_CAM_POS = new THREE.Vector3(0, 1.18, 2.95);
+const FRONT_CAM_POS = new THREE.Vector3(0, 1.18, 2.95);
+const BACK_CAM_POS = new THREE.Vector3(0, 1.18, -2.95);
+const SIDE_CAM_POS = new THREE.Vector3(2.85, 1.18, 0.28);
 const CAM_TARGET = new THREE.Vector3(0, 0.96, 0);
 
 const _mouse = new THREE.Vector2();
 const _raycaster = new THREE.Raycaster();
+
+function createSkinTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    const grad = ctx.createLinearGradient(0, 0, 0, 256);
+    grad.addColorStop(0, '#E3B89C');
+    grad.addColorStop(0.5, '#D7A587');
+    grad.addColorStop(1, '#CC9878');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 256, 256);
+
+    // Subtle natural micro-texture grain
+    for (let i = 0; i < 1600; i++) {
+      const x = (i * 73) % 256;
+      const y = (i * 139) % 256;
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(255,245,236,0.04)' : 'rgba(130,75,50,0.035)';
+      ctx.fillRect(x, y, 2, 2);
+    }
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+
+function createWovenFabricTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    ctx.fillStyle = '#F7F4EC';
+    ctx.fillRect(0, 0, 128, 128);
+    ctx.strokeStyle = 'rgba(181, 142, 70, 0.14)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 128; i += 6) {
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(128, i);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, 128);
+      ctx.stroke();
+    }
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(3, 2);
+  return tex;
+}
+
+function createLatheFromSpline(
+  points: Array<[number, number]>,
+  segments = 32
+): THREE.LatheGeometry {
+  const spline = new THREE.SplineCurve(points.map(([r, y]) => new THREE.Vector2(r, y)));
+  return new THREE.LatheGeometry(spline.getPoints(28), segments);
+}
 
 export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
   language,
@@ -66,7 +132,6 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     const container = mountRef.current;
     if (!container) return;
 
-    // Software WebGL guard
     const isSoftwareGl = (() => {
       try {
         const probe = document.createElement('canvas');
@@ -99,7 +164,7 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
 
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
+    renderer.toneMappingExposure = 1.06;
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.shadowMap.enabled = !isSoftwareGl;
@@ -124,34 +189,34 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     canvas.addEventListener('webglcontextrestored', handleContextRestored);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x09241c);
-    scene.fog = new THREE.FogExp2(0x09241c, 0.085);
+    scene.background = new THREE.Color(0x072d23);
+    scene.fog = new THREE.FogExp2(0x072d23, 0.08);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     const envTex = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
     scene.environment = envTex;
     pmremGenerator.dispose();
 
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 30);
+    const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 30);
     camera.position.copy(DEFAULT_CAM_POS);
 
     const controls = new OrbitControls(camera, canvas);
     controls.target.copy(CAM_TARGET);
     controls.enablePan = false;
-    controls.minDistance = 1.9;
+    controls.minDistance = 1.75;
     controls.maxDistance = 4.6;
-    controls.minPolarAngle = 0.35;
+    controls.minPolarAngle = 0.3;
     controls.maxPolarAngle = Math.PI * 0.62;
     controls.enableDamping = !isSoftwareGl;
     controls.dampingFactor = 0.08;
     controls.update();
 
-    // 3-point balanced studio lighting
-    const hemiLight = new THREE.HemisphereLight(0xdbeafe, 0x102a22, 0.9);
+    // Balanced studio lighting for realistic human skin & Ihram cloth depth
+    const hemiLight = new THREE.HemisphereLight(0xfff5e6, 0x0c3429, 0.95);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff5e4, 2.1);
-    keyLight.position.set(2.8, 4.2, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xfff4e2, 2.15);
+    keyLight.position.set(2.6, 4.1, 3.3);
     keyLight.castShadow = !isSoftwareGl;
     keyLight.shadow.mapSize.set(1024, 1024);
     keyLight.shadow.camera.near = 0.5;
@@ -164,26 +229,39 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     keyLight.shadow.normalBias = 0.02;
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xc59b43, 1.35);
-    rimLight.position.set(-2.6, 2.4, -2.5);
+    const fillLight = new THREE.DirectionalLight(0xd9f2ec, 0.75);
+    fillLight.position.set(-2.8, 1.8, 2.2);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0xc59b43, 1.25);
+    rimLight.position.set(-2.2, 2.5, -2.7);
     scene.add(rimLight);
+
+    const skinTexture = createSkinTexture();
+    const ihramTexture = createWovenFabricTexture();
 
     // Pedestal base grounded at y = 0
     const pedestalGroup = new THREE.Group();
     const baseMat = new THREE.MeshStandardMaterial({
-      color: 0x12392d,
-      roughness: 0.45,
-      metalness: 0.3,
+      color: 0x0f3b2f,
+      roughness: 0.42,
+      metalness: 0.32,
     });
     const goldMat = new THREE.MeshStandardMaterial({
       color: 0xc59b43,
-      roughness: 0.25,
+      roughness: 0.26,
       metalness: 0.85,
     });
-    const jointMat = new THREE.MeshStandardMaterial({
-      color: 0xb08d44,
-      roughness: 0.35,
-      metalness: 0.72,
+    const ihramMat = new THREE.MeshStandardMaterial({
+      color: 0xfaf7ef,
+      map: ihramTexture,
+      roughness: 0.85,
+      metalness: 0.02,
+    });
+    const hairMat = new THREE.MeshStandardMaterial({
+      color: 0x26211d,
+      roughness: 0.82,
+      metalness: 0.05,
     });
 
     const baseDisc = new THREE.Mesh(
@@ -202,7 +280,6 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     goldRing.position.y = 0.062;
     pedestalGroup.add(goldRing);
 
-    // Contact shadow disc
     const shadowCanvas = document.createElement('canvas');
     shadowCanvas.width = 128;
     shadowCanvas.height = 128;
@@ -228,21 +305,24 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     contactPlane.rotation.x = -Math.PI / 2;
     contactPlane.position.y = 0.064;
     pedestalGroup.add(contactPlane);
-
     scene.add(pedestalGroup);
 
-    // Composite Anatomical Human Model (Group of sculpted parts)
+    // Realistic Sculpted Anatomical Human Figure
     const bodyGroup = new THREE.Group();
     bodyGroup.position.y = 0.06;
 
-    const partMaterials = new Map<BodyPartId, THREE.MeshStandardMaterial>();
+    const partMaterials = new Map<BodyPartId, THREE.MeshPhysicalMaterial>();
     const clickableMeshes: THREE.Mesh[] = [];
+    const decorativeMeshes: THREE.Mesh[] = [];
 
     const createPartMaterial = (partId: BodyPartId) => {
-      const mat = new THREE.MeshStandardMaterial({
-        color: 0xe6ece9,
-        roughness: 0.42,
-        metalness: 0.08,
+      const mat = new THREE.MeshPhysicalMaterial({
+        color: 0xe8c4ad,
+        map: skinTexture,
+        roughness: 0.54,
+        metalness: 0.02,
+        clearcoat: 0.07,
+        clearcoatRoughness: 0.72,
         emissive: new THREE.Color(0x000000),
         emissiveIntensity: 0,
       });
@@ -272,90 +352,192 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       return mesh;
     };
 
-    // 1. Head & Face
-    registerMesh(new THREE.SphereGeometry(0.135, 32, 24), 'head', [0, 1.66, 0], undefined, [0.92, 1.12, 0.98]);
+    const addDecor = (
+      geo: THREE.BufferGeometry,
+      mat: THREE.Material,
+      pos: [number, number, number],
+      rot?: [number, number, number],
+      scale?: [number, number, number]
+    ) => {
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(...pos);
+      if (rot) mesh.rotation.set(...rot);
+      if (scale) mesh.scale.set(...scale);
+      mesh.castShadow = !isSoftwareGl;
+      mesh.receiveShadow = !isSoftwareGl;
+      decorativeMeshes.push(mesh);
+      bodyGroup.add(mesh);
+      return mesh;
+    };
 
-    // 2. Neck & Shoulders
-    registerMesh(new THREE.CylinderGeometry(0.058, 0.068, 0.12, 24), 'neck', [0, 1.49, 0]);
-    registerMesh(
-      new THREE.CapsuleGeometry(0.065, 0.31, 12, 20),
-      'neck',
-      [0, 1.40, 0],
-      [0, 0, Math.PI / 2]
+    // 1. HEAD & FACE (Sculpted Cranium + Chin/Jaw + Facial Features + Ears)
+    const headGeo = createLatheFromSpline([
+      [0.001, -0.135],
+      [0.048, -0.12],
+      [0.082, -0.068],
+      [0.098, 0.0],
+      [0.105, 0.055],
+      [0.092, 0.105],
+      [0.054, 0.135],
+      [0.001, 0.145],
+    ]);
+    registerMesh(headGeo, 'head', [0, 1.66, 0.005], undefined, [0.92, 1.0, 1.05]);
+    // Nasal bridge & tip
+    registerMesh(new THREE.CapsuleGeometry(0.013, 0.032, 6, 12), 'head', [0, 1.655, 0.104], [-0.26, 0, 0]);
+    // Brow ridge
+    registerMesh(new THREE.CapsuleGeometry(0.011, 0.068, 6, 12), 'head', [0, 1.69, 0.094], [0, 0, Math.PI / 2]);
+    // Sculpted Left & Right Ears
+    registerMesh(new THREE.SphereGeometry(0.025, 14, 14), 'head', [0.095, 1.66, -0.012], [0, 0, -0.15], [0.42, 1.18, 0.72]);
+    registerMesh(new THREE.SphereGeometry(0.025, 14, 14), 'head', [-0.095, 1.66, -0.012], [0, 0, 0.15], [0.42, 1.18, 0.72]);
+    // Hairline / scalp cap for natural realism
+    addDecor(
+      new THREE.SphereGeometry(0.106, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.56),
+      hairMat,
+      [0, 1.675, -0.008],
+      [-0.25, 0, 0],
+      [0.92, 1.0, 1.04]
     );
 
-    // 3. Chest (Anterior Thorax)
-    registerMesh(
-      new THREE.CylinderGeometry(0.195, 0.165, 0.25, 28),
-      'chest',
-      [0, 1.26, 0.025],
-      undefined,
-      [1.08, 1, 0.65]
-    );
+    // 2. NECK, TRAPEZIUS & SHOULDERS
+    const neckGeo = createLatheFromSpline([
+      [0.072, -0.07],
+      [0.056, -0.02],
+      [0.052, 0.03],
+      [0.058, 0.075],
+    ]);
+    registerMesh(neckGeo, 'neck', [0, 1.495, -0.005]);
+    // Trapezius & Clavicle Shoulder Yoke
+    registerMesh(new THREE.CapsuleGeometry(0.058, 0.30, 12, 24), 'neck', [0, 1.405, -0.005], [0, 0, Math.PI / 2], [1, 1, 0.85]);
+    // Deltoid shoulder caps
+    registerMesh(new THREE.SphereGeometry(0.074, 20, 18), 'neck', [0.215, 1.385, -0.005], undefined, [0.95, 1.05, 0.92]);
+    registerMesh(new THREE.SphereGeometry(0.074, 20, 18), 'neck', [-0.215, 1.385, -0.005], undefined, [0.95, 1.05, 0.92]);
 
-    // 4. Abdomen & Stomach
-    registerMesh(
-      new THREE.CylinderGeometry(0.162, 0.168, 0.24, 28),
-      'abdomen',
-      [0, 1.02, 0.025],
-      undefined,
-      [1.02, 1, 0.62]
-    );
+    // 3. CHEST (Sculpted Ribcage + Pectoral Contour)
+    const chestGeo = createLatheFromSpline([
+      [0.145, -0.125],
+      [0.162, -0.05],
+      [0.184, 0.03],
+      [0.188, 0.095],
+      [0.165, 0.135],
+    ]);
+    registerMesh(chestGeo, 'chest', [0, 1.255, 0.024], undefined, [1.06, 1.0, 0.68]);
+    // Pectoral anterior contours
+    registerMesh(new THREE.SphereGeometry(0.092, 18, 16), 'chest', [0.075, 1.275, 0.088], undefined, [1.05, 0.82, 0.45]);
+    registerMesh(new THREE.SphereGeometry(0.092, 18, 16), 'chest', [-0.075, 1.275, 0.088], undefined, [1.05, 0.82, 0.45]);
 
-    // 5. Back & Spine (Posterior Thorax + Lumbar)
-    registerMesh(
-      new THREE.CapsuleGeometry(0.145, 0.34, 16, 24),
-      'back',
-      [0, 1.14, -0.055],
-      undefined,
-      [1.12, 1, 0.45]
-    );
+    // 4. ABDOMEN & WAIST
+    const abdomenGeo = createLatheFromSpline([
+      [0.164, -0.12],
+      [0.148, -0.04],
+      [0.145, 0.04],
+      [0.155, 0.12],
+    ]);
+    registerMesh(abdomenGeo, 'abdomen', [0, 1.02, 0.022], undefined, [1.04, 1.0, 0.66]);
 
-    // Pelvis structural connector (gold accent belt ring)
-    const waistBand = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.172, 0.175, 0.05, 28),
-      baseMat
-    );
-    waistBand.position.set(0, 0.89, 0);
-    waistBand.scale.set(1.02, 1, 0.68);
-    bodyGroup.add(waistBand);
+    // 5. BACK & SPINE (Sculpted Dorsal Thorax + Scapulae)
+    const backGeo = createLatheFromSpline([
+      [0.148, -0.20],
+      [0.142, -0.08],
+      [0.166, 0.06],
+      [0.172, 0.16],
+      [0.140, 0.21],
+    ]);
+    registerMesh(backGeo, 'back', [0, 1.15, -0.042], undefined, [1.05, 1.0, 0.52]);
+    // Subtle posterior scapulae musculature
+    registerMesh(new THREE.SphereGeometry(0.084, 16, 14), 'back', [0.078, 1.27, -0.082], [0.1, 0, -0.12], [0.95, 1.15, 0.42]);
+    registerMesh(new THREE.SphereGeometry(0.084, 16, 14), 'back', [-0.078, 1.27, -0.082], [0.1, 0, 0.12], [0.95, 1.15, 0.42]);
 
-    // 6. Left Arm (viewer's right side in anatomical +X/+Z -> anatomical left is +X)
-    registerMesh(new THREE.CapsuleGeometry(0.048, 0.21, 10, 18), 'left_arm', [0.275, 1.24, 0], [0, 0, -0.14]);
-    registerMesh(new THREE.CapsuleGeometry(0.041, 0.21, 10, 18), 'left_arm', [0.315, 0.99, 0.03], [-0.18, 0, -0.08]);
-    registerMesh(new THREE.SphereGeometry(0.048, 16, 16), 'left_arm', [0.33, 0.83, 0.06]);
+    // Modest Pilgrim Ihram Waist-Wrap (Izar) + Gold Belt Trim (decorative only, keeps limbs/abdomen clickable)
+    const ihramWrapGeo = createLatheFromSpline([
+      [0.188, -0.14],
+      [0.184, -0.05],
+      [0.176, 0.04],
+      [0.168, 0.10],
+    ]);
+    addDecor(ihramWrapGeo, ihramMat, [0, 0.84, 0.005], undefined, [1.06, 1.0, 0.72]);
+    addDecor(new THREE.CylinderGeometry(0.175, 0.178, 0.028, 32), goldMat, [0, 0.925, 0.005], undefined, [1.06, 1.0, 0.72]);
 
-    // 7. Right Arm (anatomical right is -X)
-    registerMesh(new THREE.CapsuleGeometry(0.048, 0.21, 10, 18), 'right_arm', [-0.275, 1.24, 0], [0, 0, 0.14]);
-    registerMesh(new THREE.CapsuleGeometry(0.041, 0.21, 10, 18), 'right_arm', [-0.315, 0.99, 0.03], [-0.18, 0, 0.08]);
-    registerMesh(new THREE.SphereGeometry(0.048, 16, 16), 'right_arm', [-0.33, 0.83, 0.06]);
+    // Helper for sculpted arms + hands with thumb & fingers
+    const buildArm = (side: 'left_arm' | 'right_arm', sign: 1 | -1) => {
+      const upperArmGeo = createLatheFromSpline([
+        [0.039, -0.135],
+        [0.046, -0.05],
+        [0.052, 0.04],
+        [0.054, 0.115],
+        [0.042, 0.14],
+      ]);
+      registerMesh(upperArmGeo, side, [sign * 0.255, 1.24, 0.0], [0, 0, -sign * 0.14]);
 
-    // 8. Left Leg & Knee
-    registerMesh(new THREE.CapsuleGeometry(0.072, 0.30, 12, 20), 'left_leg', [0.105, 0.68, 0]);
-    registerMesh(new THREE.CapsuleGeometry(0.056, 0.28, 12, 20), 'left_leg', [0.105, 0.30, 0]);
+      // Elbow joint contour
+      registerMesh(new THREE.SphereGeometry(0.041, 16, 14), side, [sign * 0.278, 1.10, 0.012]);
 
-    // 9. Right Leg & Knee
-    registerMesh(new THREE.CapsuleGeometry(0.072, 0.30, 12, 20), 'right_leg', [-0.105, 0.68, 0]);
-    registerMesh(new THREE.CapsuleGeometry(0.056, 0.28, 12, 20), 'right_leg', [-0.105, 0.30, 0]);
+      const forearmGeo = createLatheFromSpline([
+        [0.028, -0.13],
+        [0.034, -0.04],
+        [0.042, 0.05],
+        [0.040, 0.12],
+      ]);
+      registerMesh(forearmGeo, side, [sign * 0.305, 0.965, 0.036], [-0.22, 0, -sign * 0.08]);
 
-    // 10. Feet & Ankles
-    registerMesh(new THREE.BoxGeometry(0.11, 0.065, 0.22), 'feet', [0.105, 0.045, 0.045]);
-    registerMesh(new THREE.BoxGeometry(0.11, 0.065, 0.22), 'feet', [-0.105, 0.045, 0.045]);
+      // Palm + Thumb + Fingers
+      registerMesh(new THREE.BoxGeometry(0.044, 0.072, 0.024), side, [sign * 0.328, 0.81, 0.07], [-0.22, 0, -sign * 0.06], [1, 1, 1]);
+      registerMesh(new THREE.CapsuleGeometry(0.010, 0.026, 6, 10), side, [sign * 0.305, 0.815, 0.088], [-0.4, 0, sign * 0.5]);
+      // Finger bank
+      for (let f = -1.5; f <= 1.5; f += 1) {
+        registerMesh(
+          new THREE.CapsuleGeometry(0.0065, 0.034, 6, 8),
+          side,
+          [sign * 0.328, 0.752, 0.076 + f * 0.008],
+          [-0.22, 0, -sign * 0.05]
+        );
+      }
+    };
 
-    // Subtle metallic anatomical joint rings (knees, elbows, shoulders) for high-craft detail
-    const jointCoords: [number, number, number][] = [
-      [0.24, 1.38, 0],
-      [-0.24, 1.38, 0],
-      [0.295, 1.11, 0.01],
-      [-0.295, 1.11, 0.01],
-      [0.105, 0.49, 0],
-      [-0.105, 0.49, 0],
-    ];
-    jointCoords.forEach(([jx, jy, jz]) => {
-      const jointSphere = new THREE.Mesh(new THREE.SphereGeometry(0.036, 14, 14), jointMat);
-      jointSphere.position.set(jx, jy, jz);
-      bodyGroup.add(jointSphere);
-    });
+    buildArm('left_arm', 1);
+    buildArm('right_arm', -1);
+
+    // Helper for sculpted thigh + knee + calf + contoured foot with toes
+    const buildLeg = (legPart: 'left_leg' | 'right_leg', sign: 1 | -1) => {
+      const thighGeo = createLatheFromSpline([
+        [0.058, -0.19],
+        [0.068, -0.08],
+        [0.081, 0.04],
+        [0.086, 0.16],
+        [0.074, 0.20],
+      ]);
+      registerMesh(thighGeo, legPart, [sign * 0.105, 0.65, 0.0], undefined, [1.0, 1.0, 1.04]);
+
+      // Anatomical Knee Patella
+      registerMesh(new THREE.SphereGeometry(0.058, 18, 16), legPart, [sign * 0.105, 0.455, 0.012], undefined, [0.95, 1.08, 0.96]);
+
+      const calfGeo = createLatheFromSpline([
+        [0.038, -0.19],
+        [0.046, -0.09],
+        [0.060, 0.04],
+        [0.056, 0.14],
+        [0.052, 0.19],
+      ]);
+      registerMesh(calfGeo, legPart, [sign * 0.105, 0.265, -0.004]);
+
+      // Feet & Ankles (grounded cleanly on pedestal top y = 0 in bodyGroup)
+      registerMesh(new THREE.SphereGeometry(0.044, 16, 14), 'feet', [sign * 0.105, 0.075, -0.005], undefined, [0.92, 0.95, 1.02]);
+      // Heel & Midfoot arch
+      registerMesh(new THREE.CapsuleGeometry(0.042, 0.105, 10, 16), 'feet', [sign * 0.105, 0.036, 0.035], [Math.PI / 2, 0, 0], [1.05, 1.0, 0.72]);
+      // Sculpted Forefoot & Toes
+      for (let tIdx = 0; tIdx < 5; tIdx++) {
+        const xOff = sign * (0.075 + tIdx * 0.015);
+        const zLen = 0.125 - tIdx * 0.005;
+        registerMesh(
+          new THREE.CapsuleGeometry(0.0085, 0.022, 6, 10),
+          'feet',
+          [xOff, 0.024, zLen],
+          [Math.PI / 2, 0, 0]
+        );
+      }
+    };
+
+    buildLeg('left_leg', 1);
+    buildLeg('right_leg', -1);
 
     scene.add(bodyGroup);
 
@@ -363,7 +545,6 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       renderer.compile(scene, camera);
     }
 
-    // Camera transition state (exponentially damped, cancelled on manual drag)
     let targetCamPos: THREE.Vector3 | null = null;
     let lastFrameTime = performance.now();
 
@@ -371,7 +552,6 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       targetCamPos = null;
     });
 
-    // Coalesced On-Demand Rendering Loop
     let frameId = 0;
     let renderBusy = false;
     let renderDirty = false;
@@ -382,20 +562,20 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       const activeHovered = hoveredPartRef.current;
       partMaterials.forEach((mat, id) => {
         if (id === activeSelected) {
-          mat.color.setHex(0xdc2626);
+          mat.color.setHex(0xef4444);
           mat.emissive.setHex(0x991b1b);
-          mat.emissiveIntensity = 0.45;
-          mat.roughness = 0.28;
+          mat.emissiveIntensity = 0.42;
+          mat.roughness = 0.34;
         } else if (id === activeHovered) {
-          mat.color.setHex(0xf59e0b);
+          mat.color.setHex(0xfbbf24);
           mat.emissive.setHex(0xb45309);
           mat.emissiveIntensity = 0.25;
-          mat.roughness = 0.34;
+          mat.roughness = 0.38;
         } else {
-          mat.color.setHex(0xe6ece9);
+          mat.color.setHex(0xe8c4ad);
           mat.emissive.setHex(0x000000);
           mat.emissiveIntensity = 0;
-          mat.roughness = 0.42;
+          mat.roughness = 0.54;
         }
       });
     };
@@ -493,7 +673,6 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       requestRender();
     });
 
-    // Pointer interaction (distinguish click vs orbit drag)
     let downX = 0;
     let downY = 0;
     let lastHoverCheck = 0;
@@ -522,7 +701,7 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
 
     const onPointerUp = (e: PointerEvent) => {
       const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
-      if (dist > 6) return; // User dragged to orbit
+      if (dist > 6) return;
       const hitPart = pickBodyPart(e.clientX, e.clientY);
       if (hitPart) {
         onSelectRef.current(hitPart === selectedPartRef.current ? null : hitPart);
@@ -569,7 +748,6 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // Initial render
     requestRender();
 
     return () => {
@@ -587,15 +765,18 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       controls.dispose();
       envTex.dispose();
       shadowTex.dispose();
+      skinTexture.dispose();
+      ihramTexture.dispose();
       clickableMeshes.forEach((m) => m.geometry.dispose());
+      decorativeMeshes.forEach((m) => m.geometry.dispose());
       partMaterials.forEach((m) => m.dispose());
       baseDisc.geometry.dispose();
       goldRing.geometry.dispose();
       contactPlane.geometry.dispose();
-      waistBand.geometry.dispose();
       baseMat.dispose();
       goldMat.dispose();
-      jointMat.dispose();
+      ihramMat.dispose();
+      hairMat.dispose();
       renderer.dispose();
     };
   }, []);
@@ -607,9 +788,9 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
     : null;
 
   return (
-    <div className="bg-white border-2 border-slate-300 rounded-xl overflow-hidden shadow-xs">
+    <div className="a11y-surface bg-white border-2 border-[#DDD4C2] rounded-xl overflow-hidden shadow-xs">
       {/* Section Header */}
-      <div className="px-5 py-4 bg-[#082D23] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#C59B43]">
+      <div className="px-5 py-4 bg-[#0D5240] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#B58E46]">
         <div>
           <h2 className="font-display text-base sm:text-lg font-bold text-white">
             {t.body3DTitle}
@@ -628,16 +809,19 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       </div>
 
       {/* 3D Viewport Container */}
-      <div className="relative w-full h-[380px] sm:h-[430px] bg-[#09241C]">
+      <div className="relative w-full h-[390px] sm:h-[440px] bg-[#072D23]">
         {webglError ? (
-          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-white space-y-3">
-            <p className="font-semibold text-sm">{t.body3DHint}</p>
-            <p className="text-xs text-slate-300">
+          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-white space-y-3 bg-[#083D2F]">
+            <p className="font-display font-bold text-base text-[#E6C77A]">{t.body3DTitle}</p>
+            <p className="font-medium text-sm max-w-md text-slate-200">{t.body3DHint}</p>
+            <div className="bg-[#06221A] border border-[#B58E46]/60 rounded-lg px-4 py-2 text-xs text-slate-100">
               {t.selectedAreaLabel}{' '}
-              {selectedPart
-                ? BODY_PART_LABELS[selectedPart][language]
-                : t.noAreaSelected}
-            </p>
+              <strong className="text-[#E6C77A]">
+                {selectedPart
+                  ? BODY_PART_LABELS[selectedPart][language]
+                  : t.noAreaSelected}
+              </strong>
+            </div>
           </div>
         ) : (
           <div ref={mountRef} className="w-full h-full" />
@@ -646,7 +830,7 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
         {/* Top-Center Readout Strip (Solid surface, no backdrop-blur over WebGL) */}
         {activePartLabel && (
           <div className="pointer-events-none absolute top-3 inset-x-0 flex justify-center px-3 z-10">
-            <div className="bg-[#082D23]/95 border border-[#C59B43] text-white text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-md">
+            <div className="bg-[#083D2F] border border-[#E6C77A] text-white text-xs font-bold px-3.5 py-1.5 rounded-lg shadow-md">
               {activePartLabel}
             </div>
           </div>
@@ -657,7 +841,7 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
           <button
             type="button"
             onClick={() => setControlsCollapsed((prev) => !prev)}
-            className="pointer-events-auto mb-1.5 px-3 py-1 rounded-md bg-[#082D23] border border-[#C59B43]/70 text-[#E6C77A] text-[11px] font-semibold flex items-center gap-1.5 cursor-pointer hover:bg-[#0D4435] transition-colors"
+            className="pointer-events-auto mb-1.5 px-3 py-1 rounded-md bg-[#083D2F] border border-[#B58E46]/70 text-[#E6C77A] text-[11px] font-semibold flex items-center gap-1.5 cursor-pointer hover:bg-[#0D5240] transition-colors"
           >
             {controlsCollapsed ? (
               <>
@@ -673,25 +857,32 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
           </button>
 
           {!controlsCollapsed && (
-            <div className="pointer-events-auto bg-[#082D23]/95 border border-[#C59B43]/60 rounded-xl p-1.5 flex flex-wrap items-center justify-center gap-1.5 shadow-lg">
+            <div className="pointer-events-auto bg-[#083D2F] border border-[#B58E46]/70 rounded-xl p-1.5 flex flex-wrap items-center justify-center gap-1.5 shadow-lg">
               <button
                 type="button"
                 onClick={() => setCameraTargetRef.current?.(FRONT_CAM_POS)}
-                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-white bg-[#0F4939] hover:bg-[#15634D] rounded-lg cursor-pointer whitespace-nowrap"
+                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-white bg-[#0D5240] hover:bg-[#146D55] rounded-lg cursor-pointer whitespace-nowrap"
               >
                 {t.viewFront}
               </button>
               <button
                 type="button"
                 onClick={() => setCameraTargetRef.current?.(BACK_CAM_POS)}
-                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-white bg-[#0F4939] hover:bg-[#15634D] rounded-lg cursor-pointer whitespace-nowrap"
+                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-white bg-[#0D5240] hover:bg-[#146D55] rounded-lg cursor-pointer whitespace-nowrap"
               >
                 {t.viewBack}
               </button>
               <button
                 type="button"
+                onClick={() => setCameraTargetRef.current?.(SIDE_CAM_POS)}
+                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-white bg-[#0D5240] hover:bg-[#146D55] rounded-lg cursor-pointer whitespace-nowrap"
+              >
+                {t.viewSide}
+              </button>
+              <button
+                type="button"
                 onClick={() => setCameraTargetRef.current?.(DEFAULT_CAM_POS)}
-                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-[#E6C77A] hover:bg-[#0F4939] rounded-lg flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                className="btn-interactive min-h-[38px] px-3 py-1.5 text-xs font-semibold text-[#E6C77A] hover:bg-[#0D5240] rounded-lg flex items-center gap-1 cursor-pointer whitespace-nowrap"
               >
                 <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>{t.viewReset}</span>
@@ -712,7 +903,7 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
       </div>
 
       {/* Accessible Quick Body-Part Buttons below the 3D viewport */}
-      <div className="p-4 bg-slate-50 border-t border-slate-200">
+      <div className="p-4 bg-[#FAF8F4] border-t border-[#DDD4C2]">
         <div className="flex flex-wrap gap-1.5">
           {ALL_BODY_PARTS.map((partId) => {
             const isSelected = selectedPart === partId;
@@ -722,10 +913,10 @@ export const Body3DSelector: React.FC<Body3DSelectorProps> = ({
                 type="button"
                 onClick={() => onSelectPart(isSelected ? null : partId)}
                 aria-pressed={isSelected}
-                className={`btn-interactive min-h-[40px] px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer whitespace-nowrap ${
+                className={`btn-interactive min-h-[42px] px-3 py-1.5 rounded-lg text-xs font-semibold border cursor-pointer whitespace-nowrap ${
                   isSelected
                     ? 'bg-red-700 text-white border-red-800 shadow-sm ring-2 ring-red-700/25'
-                    : 'bg-white text-slate-800 border-slate-300 hover:border-[#082D23] hover:bg-slate-100'
+                    : 'bg-white text-[#111D18] border-[#DDD4C2] hover:border-[#0D5240] hover:bg-[#F2EDE2]'
                 }`}
               >
                 {BODY_PART_LABELS[partId][language]}
